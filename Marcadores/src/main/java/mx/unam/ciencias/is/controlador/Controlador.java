@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author jonathan
  */
-@Controller 
+@Controller //Notación para spring
 public class Controlador {
     /*Injectamos el modelo del marcador */
     @Autowired
@@ -32,11 +32,12 @@ public class Controlador {
      * @param model 
      * @return regresa el modelo 
      */
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    //Notación para una petición, value es la petición y method es el tipo de petición
+    @RequestMapping(value="/", method = RequestMethod.GET) 
     public ModelAndView marcadores(ModelMap model){
         List<Marcador> mar = marcador_db.getMarcadores();
           
-        model.addAttribute("marcadores", mar);
+        model.addAttribute("marcadores", mar); //"marcadores" es el que voy a ver en JSP
         
         return new ModelAndView("inicio",model);
     
@@ -70,34 +71,74 @@ public class Controlador {
             m.setLongitud(longitud);
             m.setNombre(nombre);
             m.setDescripcion(descripcion);
-            marcador_db.guardar(m);
-        
+            marcador_db.guardar(m);    
         }
         return "redirect:/";
     }
     
-    
-    
     /**
      * Actualiza el marcador
+     * Redirige al marcador que queremos actualizar
+     * usamos la longitud y latitud para buscar el marcador
+     * En el modelo enviarselo a la página que si lo va a actualizar
      * @param model
      * @param request
-     * @return 
+     * @return un objeto ModelAndView
      */ 
     @RequestMapping(value="/actualizaM", method = RequestMethod.GET)
     public ModelAndView actualizaM(ModelMap model,HttpServletRequest request){
         //Aqui va tu codigo
-    
+        Double latitud = Double.parseDouble(request.getParameter("latitud"));
+        Double longitud = Double.parseDouble(request.getParameter("longitud"));
+        Marcador m = marcador_db.getMarcador(latitud, longitud);
+        model.addAttribute("marcador", m);
+        //"actualiza"jsp al que le vas a inyenctar el modelo
+        return new ModelAndView("actualizaM", model);
     }
     
-    
+    /**
+     * Este método maneja la petición eliminar marcador
+     * @param request recibimos los datos de la petición eliminar
+     * @return nos regresa a la página principal donde se refleja la acción
+     */
     @RequestMapping(value="/eliminaMarcador", method = RequestMethod.GET)
     public String eliminaMarcador(HttpServletRequest request){
         //Aqui va tu codigo
+        Double latitud = Double.parseDouble(request.getParameter("latitud"));
+        Double longitud = Double.parseDouble(request.getParameter("longitud"));
+        Marcador m = marcador_db.getMarcador(latitud, longitud);
+        marcador_db.eliminar(m);
+        return "redirect:/";
     }
     
+    /**
+     * Permite modificar los datos de un marcador, primero 
+     * se hace la petición y se especifica el tipo, luego
+     * leemos los campos.
+     * @param request
+     * @return nos regresa a la página principal
+     */
     @RequestMapping(value= "/actualizar", method = RequestMethod.POST)
     public String actualizar(HttpServletRequest request){
-        //Aqui va tu codigo   
+        //Aqui va tu codigo
+        String latitud = request.getParameter("latitud");
+        String longitud = request.getParameter("longitud");
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("desc");
+        Integer id = Integer.parseInt(request.getParameter("id"));
+        Marcador m = marcador_db.getMarcadorId(id);
+        //Debemos verificar cuales son los campos que el ususario necesita actualizar
+        if (!nombre.isEmpty())
+            m.setNombre(nombre);
+        if (!latitud.isEmpty() && !longitud.isEmpty()) {
+            m.setLatitud(Double.parseDouble(latitud));
+            m.setLongitud(Double.parseDouble(longitud));
+        }
+        if (!descripcion.isEmpty())
+            m.setDescripcion(descripcion);
+        //persistencia en la base de datos
+        //se actualiza directo en la base de datos
+        marcador_db.actualizar(m);
+        return "redirect:/";
     }
 }
