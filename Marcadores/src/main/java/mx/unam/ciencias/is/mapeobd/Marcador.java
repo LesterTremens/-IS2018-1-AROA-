@@ -23,19 +23,17 @@ public class Marcador {
     @Id@GeneratedValue(strategy =GenerationType.IDENTITY )
     @Column(name = "idmarcador")
     private int marcador_id;
-    
-    //Aqui va tu codigo
     @Column(name = "nombreM")
-    private String nombre;
-    
+    private String nombreM;
     @Column(name = "latitud")
     private double latitud;
-    
     @Column(name = "longitud")
     private double longitud;
-    
     @Column(name = "descripcion")
     private String descripcion;
+    
+    
+    //Aqui va tu codigo
     
     /**Nos da el id del marcador
      * @return el id del marcador 
@@ -50,51 +48,49 @@ public class Marcador {
     public void setMarcador_id(int marcador_id) {
         this.marcador_id = marcador_id;
     }
-    
-    
-    //Aqui va tu codigo
+
     /**
      * Nos da el nombre del marcador
      * @return el nombre del marcador
      */
-    public String getNombre() {
-        return nombre;
+    public String getNombreM() {
+        return nombreM;
     }
-    
+
     /**
-     * Le da nombre al marcador
-     * @param nombre
+     * Pone el nombre del marcador
+     * @param nombreM 
      */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreM(String nombreM) {
+        this.nombreM = nombreM;
     }
-    
+
     /**
-     * Nos da la latitud del marcador
-     * @return valor de latitud del marcador
+     * Nos da la latitud
+     * @return la latitud
      */
     public double getLatitud() {
         return latitud;
     }
 
     /**
-     * Le da el valor de la latitud al marcador
+     * Asigna la  latitud
      * @param latitud 
      */
     public void setLatitud(double latitud) {
         this.latitud = latitud;
     }
-    
+
     /**
-     * Nos da la el valor de la longitud del marcador
-     * @return valor de longitud del marcador
+     * Nos da la longitud
+     * @return la longitud
      */
     public double getLongitud() {
         return longitud;
     }
 
     /**
-     * Asigna un valor a la longitud el marcador
+     * Asigna la longitud
      * @param longitud 
      */
     public void setLongitud(double longitud) {
@@ -102,18 +98,20 @@ public class Marcador {
     }
 
     /**
-     * Nos da la descripcion del marcador
-     * @return 
+     * Nos da la descripcion
+     * @return la descripcion
      */
     public String getDescripcion() {
         return descripcion;
     }
 
     /**
-     * 
+     * Asigna una descripcion
      * @param descripcion 
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    
 }
