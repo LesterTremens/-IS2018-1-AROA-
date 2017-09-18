@@ -5,12 +5,15 @@
  */
 package mx.unam.ciencias.is.mapeobd;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import static javax.servlet.jsp.jstl.core.Config.set;
 
 
 @ Entity 
@@ -31,6 +34,8 @@ public class Usuario {
     private String correo;
     @Column(name  = "contrasenia")
     private String contrasenia;
+    @OneToMany(mappedBy = "usuario")
+    private Set<Marcador> marcadores;
 
     public int getIdUsuario() {
         return idUsuario;
