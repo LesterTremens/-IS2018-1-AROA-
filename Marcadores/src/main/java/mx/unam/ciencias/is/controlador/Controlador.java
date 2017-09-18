@@ -5,7 +5,7 @@
  */
 package mx.unam.ciencias.is.controlador;
 
-import java.security.Principal;
+
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import mx.unam.ciencias.is.mapeobd.Marcador;
