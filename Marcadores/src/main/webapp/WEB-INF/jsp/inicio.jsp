@@ -1,4 +1,4 @@
-<%-- 
+    <%-- 
     Document   : home-admin
     Created on : May 2, 2017, 11:17:09 AM
     Author     : Orlando
@@ -14,13 +14,15 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <link rel="stylesheet" type="text/css" href="<c:url value="/css/iniciocss.css"/> ">
-        <title>Home</title>
+        <title>Hom de Orlando</title>
     </head>
     <body>
+      
+        
         
         <div class="contenedor">
             <header>
-                <form action="/Ejercicio1-Marcadores/agregaMarcador"> 
+                <form action="/Marcadores/agregaMarcador"> 
                     <button id="btnSes" class="btn btn-primary btn-lg" >Agrega un marcador</button>
                 </form>
             </header>
@@ -42,7 +44,7 @@
                     </thead>
                     <c:forEach var="m" items="${marcadores}">
                         <tbody>
-                            <th>${m.nombre}</th>
+                            <th>${m.nombreM}</th>
                             <th>${m.latitud}</th>
                             <th>${m.longitud}</th>
                             <th>

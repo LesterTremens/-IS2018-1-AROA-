@@ -5,7 +5,7 @@
  */
 package mx.unam.ciencias.is.mapeobd;
 
-import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
@@ -37,6 +37,14 @@ public class Marcador {
     @ManyToOne
     @JoinColumn(name = "usuarioId")
     private Usuario usuario;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
     
     
     

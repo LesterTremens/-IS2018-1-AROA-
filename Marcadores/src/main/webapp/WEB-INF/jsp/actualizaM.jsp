@@ -1,7 +1,7 @@
 <%-- 
-    Document   : actualizaM
-    Created on : May 30, 2017, 12:22:24 PM
-    Author     : jonathan
+    Document   : home-admin
+    Created on : May 2, 2017, 11:17:09 AM
+    Author     : Orlando
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,93 +13,125 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/css/actualizacss.css"/> ">
-        <title>Actualiza</title>
+        <link rel="stylesheet" type="text/css" href="<c:url value="/css/iniciocss.css"/> ">
+        <title>Home</title>
     </head>
     <body>
-        <h1 style=" text-align: center;color: white">Actualiza todo si quieres!</h1>
+        
         <div class="contenedor">
             <header>
-                
+                <form action="/Marcadores/agregaMarcador"> 
+                    <button id="btnSes" class="btn btn-primary btn-lg" >Agrega un marcador</button>
+                </form>
             </header>
+    
             <section class="main">
                 <div id="mapa"></div>
             </section>
+            
             <aside>
                 
-                <form action="/Marcadores/actualizar" method="POST">
-                    <input id="id" name="id" hidden="true" value="${marcador.marcadorid}"><br>
-                    <input id="nombre" name="nombre"   placeholder="${marcador.nombre}"><br>
-                    <input id="latitud" name="latitud" readonly="readonly" placeholder="${marcador.latitud}"><br>
-                    <input id="longitud" name="longitud" readonly="readonly" placeholder="${marcador.longitud}"><br>
-                    <input id="desc" name="desc"  placeholder="${marcador.descripcion}"><br>
-                    <button type="submit" class="btn btn-primary btn-lg active">Actualizame</button>
-                </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Latitud</th>
+                            <th>Longitud</th>
+                            <th>Actualiza</th>
+                        </tr>
+                    </thead>
+                    <c:forEach var="m" items="${marcadores}">
+                        <tbody>
+                            <th>${m.nombreM}</th>
+                            <th>${m.latitud}</th>
+                            <th>${m.longitud}</th>
+                            <th>
+                                <form action="/Marcadores/actualizaM" method="GET">
+                                    <input id="latitud" name="latitud" hidden="true" value="${m.latitud}">
+                                    <input id="longitud" name="longitud" hidden="true" value="${m.longitud}">
+                                    <button type="submit" class="btn btn-primary btn-lg active">Actualiza</button>
+                                </form> 
+                            </th>
+                       </tbody>
+
+                    </c:forEach>
+                </table>
+            
             </aside>
-        </div>
-                    
+         </div>
         <script>
-
-
-            function geocodePosition(pos) {
-              geocoder.geocode({
-                latLng: pos
-              }, function(responses) {
-                if (responses && responses.length > 0) {
-                  updateMarkerAddress(responses[0].formatted_address);
-                } else {
-                  updateMarkerAddress('Cannot determine address at this location.');
-                }
-              });
+            
+            function ventanaInfo(des,lat,lon,nom) {
+                var coso = '<div id="content">'+
+                           '<div id="siteNotice">'+
+                           '</div>'+
+                            '<h1 id="firstHeading" class="firstHeading">'+nom+'</h1>'+
+                            '<div id="bodyContent">'+
+                             '<p>'+des+'</p>'+
+                             '<form action="/Marcadores/eliminaMarcador" method="GET">'+
+                             '<input id="latitud" name="latitud" hidden="true" value="'+lat+'">'+
+                             '<input id="longitud" name="longitud" hidden="true" value="'+lon+'">'+
+                             '<button type="submit" class="btn btn-primary btn-lg active">Eliminame</button>'+
+                             '</form>' +
+                            '</div>'+
+                           '</div>';   
+                return coso;
             }
-
-
-
-            function updateMarkerPosition(latLng) {
-
-              document.getElementById('latitud').value=latLng.lat();
-              document.getElementById('longitud').value=latLng.lng();
-            }
-
             
             var map;
-            var latLng;
-            var geocoder;
-            function initialize() {
-              geocoder = new google.maps.Geocoder();
-              latLng = new google.maps.LatLng(${marcador.latitud},${marcador.longitud});
-              map = new google.maps.Map(document.getElementById('mapa'), {
-                zoom: 3,
-                center: latLng,
-
-              });
-              marker = new google.maps.Marker({
-                position: latLng,
-                title: '${marcador.latitud},${marcador.longitud}',
-                map: map,
-                draggable: true
-              });
-
-              // Update current position info.
-              geocodePosition(latLng);
-
-              
-
-              google.maps.event.addListener(marker, 'drag', function() {
-                updateMarkerPosition(marker.getPosition());
-              });
-
-              google.maps.event.addListener(marker, 'dragend', function() {
-                geocodePosition(marker.getPosition());
-              });
-
-
-
+            function initMap() {
+            
+            
+            markerLat = [
+                <c:forEach var="s" items="${marcadores}" varStatus="status">
+                    <c:out value="${s.latitud}"/>,
+                </c:forEach>];
+            markerLong = [
+                <c:forEach var="s" items="${marcadores}" varStatus="status">
+                <c:out value="${s.longitud}"/>,
+                </c:forEach>];
+            
+            markerName = [
+                <c:forEach var="s" items="${marcadores}" varStatus="status">
+                "${s.nombre}",
+                </c:forEach>];
+            
+            markerDescr = [
+                <c:forEach var="s" items="${marcadores}" varStatus="status">
+                "${s.descripcion}",
+                </c:forEach>];
+    
+            map = new google.maps.Map(document.getElementById('mapa'), {
+                center: {lat: 19.323447, lng: -99.179521},
+                zoom: 3
+            });
+    
+            var infowindow = new google.maps.InfoWindow(); 
+            var marker, i;
+            for (i = 0; i < markerLat.length; i++) {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(markerLat[i], markerLong[i]),
+                    map: map,
+                    title:markerName[i]
+                });
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                return function() {
+                    infowindow.setContent(ventanaInfo(markerDescr[i],markerLat[i],markerLong[i],markerName[i]));
+                    infowindow.open(map, marker);
+                }})(marker, i));
+            
+    
             }
-
+            google.maps.event.addDomListener(window, 'load', initMap);
+        }
+        
         </script>
+        <!-- Latest compiled and minified JavaScript -->
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	
         <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCug-PSCy85c1e2cPnPVzRGgdCK8RSMbdg&callback=initialize">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCug-PSCy85c1e2cPnPVzRGgdCK8RSMbdg&callback=initMap">
         </script>
+        
     </body>
 </html>

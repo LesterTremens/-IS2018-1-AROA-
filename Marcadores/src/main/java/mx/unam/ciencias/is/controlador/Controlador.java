@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -32,7 +32,7 @@ public class Controlador {
      * @param model 
      * @return regresa el modelo 
      */
-    @RequestMapping(value="/", method = RequestMethod.GET)
+    @RequestMapping(value="/inicio  ", method = RequestMethod.GET)
     public ModelAndView marcadores(ModelMap model){
         List<Marcador> mar = marcador_db.getMarcadores();
           
@@ -61,7 +61,7 @@ public class Controlador {
     public String guardaMarcador(HttpServletRequest request){
         Double latitud = Double.parseDouble(request.getParameter("latitud"));
         Double longitud = Double.parseDouble(request.getParameter("longitud"));
-        String nombre = request.getParameter("nombre");
+        String nombre = request.getParameter("nombreM");
         String descripcion = request.getParameter("descripcion");
         Marcador ma = marcador_db.getMarcador(latitud, longitud);
         if(ma==null){

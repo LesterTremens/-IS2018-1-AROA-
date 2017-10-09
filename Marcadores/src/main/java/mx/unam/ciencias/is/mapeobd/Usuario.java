@@ -37,6 +37,14 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private Set<Marcador> marcadores;
 
+    public Set<Marcador> getMarcadores() {
+        return marcadores;
+    }
+
+    public void setMarcadores(Set<Marcador> marcadores) {
+        this.marcadores = marcadores;
+    }
+
     public int getIdUsuario() {
         return idUsuario;
     }

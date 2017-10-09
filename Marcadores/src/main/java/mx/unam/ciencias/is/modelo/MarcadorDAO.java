@@ -71,7 +71,7 @@ public class MarcadorDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String hql = "FROM Marcador";
+            String hql = "from Marcador";
             Query query = session.createQuery(hql);
             result = (List<Marcador>)query.list();
             tx.commit();
@@ -136,7 +136,7 @@ public class MarcadorDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String hql = "FROM Marcador Where  marcador_id = :id1";
+            String hql = "from Marcador Where  marcador_id = :id1";
             Query query = session.createQuery(hql);
             query.setParameter("id2                 ", id);
             result = (Marcador)query.uniqueResult();

@@ -40,6 +40,12 @@ public class ControladorUsuario {
         return "redirect:/";
     }
     
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public String NuevoInicio(HttpServletRequest request){
+      
+        return "NuevoInicio";
+    }
+    
     
     
     

@@ -18,17 +18,17 @@ import org.hibernate.Transaction;
 public class UsuarioDAO {
     
     
-    // Sesion parta conactarnos con la base de datos.
+    /*Sesion para conectarnos a la base de datos*/
     private SessionFactory sessionFactory;
     
-    
     /**
-     * Inicialisamos la session a la base de datos.
+     * Inicialisamos la sesion a la base de datos.
      * @param sessionFactory 
      */
-    private void sessionFactory(SessionFactory sessionFactory){
+    public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+    
     
     public void guardar(Usuario usuario){
         //Se inicia la sesion
